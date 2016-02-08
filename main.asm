@@ -6,6 +6,8 @@
                 .EQU EEPROM_BYTE1_ADDR = 0x0010
                 .EQU EEPROM_BYTE2_ADDR = 0x1020
                 
+                .EQU WAIT_TIME_MS = 1000
+                
                 ; --- Beginning of Code Segment ---
                 .CSEG
                 .ORG    0x00
@@ -21,14 +23,17 @@
                 ldi     r16, 2
                 out     TWBR, r16
                 
-                ; --- Wait 4 seconds ---
-main_start:     ; Delay Function
+                ; --- Wait 1 second ---
+main_start:     ldi     r24,  LOW(WAIT_TIME_MS)
+                ldi     r25, HIGH(WAIT_TIME_MS)
+                rcall   delay_ms
                 
                 ; --- Write Byte1 to EEPROM ---
-                ldi     r25, HIGH(EEPROM_BYTE1_ADDR)
                 ldi     r24,  LOW(EEPROM_BYTE1_ADDR)
-                call    i2c_eeprom_write_byte
+                ldi     r25, HIGH(EEPROM_BYTE1_ADDR)
+                rcall   i2c_eeprom_write_byte
                 
                 rjmp    main_start
                 
                 .INCLUDE "i2c-eeprom-write-byte.asm"
+                .INCLUDE "avr-lib/delay-ms-1m.asm"
