@@ -111,10 +111,10 @@ i2c_eeprom_read_byte_W7:    in      r16, TWCR
                             in      r18, TWDR
                             
                             ; --- Skip Error Status ---
-                            rjmp    i2c_eeprom_write_byte_W8
+                            rjmp    i2c_eeprom_read_byte_W8
                             
                             ; --- Set Return Status to Error ---
-i2c_eeprom_write_byte_E1:   ldi     r22, 0x01
+i2c_eeprom_read_byte_E1:   ldi     r22, 0x01
                             
                             ; --- Send STOP Condition ---
 i2c_eeprom_read_byte_W8:    ldi     r16, I2C_STOP
