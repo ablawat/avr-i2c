@@ -4,7 +4,7 @@ i2c_eeprom_write_byte:      push    r16
                             clr     r22
                             
                             ; --- Send START Condition ---
-                            ldi     r16, I2C_START
+                            ldi     r16, TWI_START
                             out     TWCR, r16
                             
                             ; --- Wait ---
@@ -14,13 +14,13 @@ i2c_eeprom_write_byte_W1:   in      r16, TWCR
                             
                             ; --- Check that START Condition was sent ---
                             in      r16, TWSR
-                            cpi     r16, I2C_START_SENT
+                            cpi     r16, TWI_START_SENT
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send Slave Device Address + Write ---
-                            ldi     r16, EEPROM_DEV_ADDR | I2C_WRITE
+                            ldi     r16, EEPROM_DEV_ADDR | TWI_WRITE
                             out     TWDR, r16
-                            ldi     r16, I2C_SEND
+                            ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
                             ; --- Wait ---
@@ -30,12 +30,12 @@ i2c_eeprom_write_byte_W2:   in      r16, TWCR
                             
                             ; --- Check that Slave Addres + Write was sent ---
                             in      r16, TWSR
-                            cpi     r16, I2C_MT_SLA_SENT_ACK
+                            cpi     r16, TWI_MT_SLA_SENT_ACK
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send High Byte of EEPROM Address ---
                             out     TWDR, r25
-                            ldi     r16, I2C_SEND
+                            ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
                             ; --- Wait ---
@@ -45,12 +45,12 @@ i2c_eeprom_write_byte_W3:   in      r16, TWCR
                             
                             ; --- Check that Address High Byte was sent ---
                             in      r16, TWSR
-                            cpi     r16, I2C_MT_DATA_SENT_ACK
+                            cpi     r16, TWI_MT_DATA_SENT_ACK
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send Low Byte of EEPROM Address ---
                             out     TWDR, r24
-                            ldi     r16, I2C_SEND
+                            ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
                             ; --- Wait ---
@@ -60,12 +60,12 @@ i2c_eeprom_write_byte_W4:   in      r16, TWCR
                             
                             ; --- Check that Address Low Byte was sent ---
                             in      r16, TWSR
-                            cpi     r16, I2C_MT_DATA_SENT_ACK
+                            cpi     r16, TWI_MT_DATA_SENT_ACK
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send Data Byte ---
                             out     TWDR, r18
-                            ldi     r16, I2C_SEND
+                            ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
                             ; --- Wait ---
@@ -75,7 +75,7 @@ i2c_eeprom_write_byte_W5:   in      r16, TWCR
                             
                             ; --- Check that ... ---
                             in      r16, TWSR
-                            cpi     r16, I2C_MT_DATA_SENT_ACK
+                            cpi     r16, TWI_MT_DATA_SENT_ACK
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Skip Error Status ---
@@ -85,7 +85,7 @@ i2c_eeprom_write_byte_W5:   in      r16, TWCR
 i2c_eeprom_write_byte_E1:   ldi     r22, 0x01
                             
                             ; --- Send STOP Condition ---
-i2c_eeprom_write_byte_W6:   ldi     r16, I2C_STOP
+i2c_eeprom_write_byte_W6:   ldi     r16, TWI_STOP
                             out     TWCR, r16
                             
                             pop     r16
