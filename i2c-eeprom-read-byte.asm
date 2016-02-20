@@ -1,7 +1,5 @@
-i2c_eeprom_read_byte:       push    r16
-                            
-                            ; --- Set Return Status to No Error ---
-                            clr     r22
+                            ; --- Set Return Status to I2C_STATUS_OK ---
+i2c_eeprom_read_byte:       clr     r22
                             
                             ; --- Send START Condition ---
                             ldi     r16, TWI_START
@@ -114,12 +112,10 @@ i2c_eeprom_read_byte_W7:    in      r16, TWCR
                             rjmp    i2c_eeprom_read_byte_W8
                             
                             ; --- Set Return Status to Error ---
-i2c_eeprom_read_byte_E1:    ldi     r22, 0x01
+i2c_eeprom_read_byte_E1:    ldi     r22, I2C_STATUS_ERR
                             
                             ; --- Send STOP Condition ---
 i2c_eeprom_read_byte_W8:    ldi     r16, TWI_STOP
                             out     TWCR, r16
-                            
-                            pop     r16
                             
                             ret
