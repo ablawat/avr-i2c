@@ -7,3 +7,6 @@
 ; --- Return Status Codes ---
 .EQU I2C_STATUS_OK  = 0
 .EQU I2C_STATUS_ERR = 1
+
+; --- Define Device Address ---
+.EQU EEPROM_DEV_ADDR = 0xA0
