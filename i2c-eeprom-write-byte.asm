@@ -1,5 +1,5 @@
                             ; --- Set Return Status to I2C_STATUS_OK ---
-i2c_eeprom_write_byte:      clr     r22
+i2c_eeprom_write_byte:      clr     I2C_RET_STAT
                             
                             ; --- Send START Condition ---
                             ldi     r16, TWI_START
@@ -32,7 +32,7 @@ i2c_eeprom_write_byte_W2:   in      r16, TWCR
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send High Byte of EEPROM Address ---
-                            out     TWDR, r25
+                            out     TWDR, I2C_ARG_ADDR_H
                             ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
@@ -47,7 +47,7 @@ i2c_eeprom_write_byte_W3:   in      r16, TWCR
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send Low Byte of EEPROM Address ---
-                            out     TWDR, r24
+                            out     TWDR, I2C_ARG_ADDR_L
                             ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
@@ -62,7 +62,7 @@ i2c_eeprom_write_byte_W4:   in      r16, TWCR
                             brne    i2c_eeprom_write_byte_E1
                             
                             ; --- Send Data Byte ---
-                            out     TWDR, r18
+                            out     TWDR, I2C_ARG_DATA
                             ldi     r16, TWI_SEND
                             out     TWCR, r16
                             
@@ -71,7 +71,7 @@ i2c_eeprom_write_byte_W5:   in      r16, TWCR
                             sbrs    r16, TWINT
                             rjmp    i2c_eeprom_write_byte_W5
                             
-                            ; --- Check that ... ---
+                            ; --- Check that Data Byte was sent ---
                             in      r16, TWSR
                             cpi     r16, TWI_MT_DATA_SENT_ACK
                             brne    i2c_eeprom_write_byte_E1
@@ -80,7 +80,7 @@ i2c_eeprom_write_byte_W5:   in      r16, TWCR
                             rjmp    i2c_eeprom_write_byte_W6
                             
                             ; --- Set Return Status to Error ---
-i2c_eeprom_write_byte_E1:   ldi     r22, I2C_STATUS_ERR
+i2c_eeprom_write_byte_E1:   ldi     I2C_RET_STAT, I2C_STATUS_ERR
                             
                             ; --- Send STOP Condition ---
 i2c_eeprom_write_byte_W6:   ldi     r16, TWI_STOP
