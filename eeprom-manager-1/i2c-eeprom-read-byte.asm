@@ -72,7 +72,7 @@ i2c_eeprom_read_byte_W5:    in      r16, TWCR
                             
                             ; --- Check that Repeated START Condition was sent ---
                             in      r16, TWSR
-                            cpi     r16, TWI_RE_START_SENT
+                            cpi     r16, TWI_RESTART_SENT
                             brne    i2c_eeprom_read_byte_E1
                             
                             ; --- Send Slave Device Address + Read ---
@@ -92,7 +92,7 @@ i2c_eeprom_read_byte_W6:    in      r16, TWCR
                             brne    i2c_eeprom_read_byte_E1
                             
                             ; --- Receive Data Byte ---
-                            ldi     r16, TWI_SEND | TWI_SEND_NACK
+                            ldi     r16, TWI_RECV_NACK
                             out     TWCR, r16
                             
                             ; --- Wait ---
