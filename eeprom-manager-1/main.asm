@@ -2,14 +2,7 @@
                 .INCLUDE "avr-lib/delay-def.inc"
                 .INCLUDE "twi-def.inc"
                 .INCLUDE "i2c-def.inc"
-                
-                ; --- Start Address and Shift Value ---
-                .EQU EEPROM_ADDR_START = 0x0200
-                .EQU EEPROM_ADDR_SHIFT = 4
-                
-                ; --- Timeouts ---
-                .EQU WAIT_TIME1_MS = 500
-                .EQU WAIT_TIME2_MS = 250
+                .INCLUDE "main.inc"
                 
                 ; --- EEPROM Register Defines ---
                 .DEF EEPROM_DATA = r0
@@ -43,9 +36,11 @@
                 sbi     DDRD, DEBUG_PIN1
                 sbi     DDRD, DEBUG_PIN2
                 
-                ; --- [TEMPORARY ENABLE PULL-UP RESISTORS] ---
+                #ifdef I2C_PULL_UP
+                ; --- Enable Internal PULL-UP Resistors ---
                 sbi     PORTC, PORTC4
                 sbi     PORTC, PORTC5
+                #endif
                 
                 ; --- Load Address Shift Value ---
                 ldi     r16,  LOW(EEPROM_ADDR_SHIFT)
