@@ -1,8 +1,8 @@
                 .INCLUDE "devices/m8def.inc"
                 .INCLUDE "avr-lib/delay-def.inc"
+                .INCLUDE "main.inc"
                 .INCLUDE "twi-def.inc"
                 .INCLUDE "i2c-def.inc"
-                .INCLUDE "main.inc"
                 
                 ; --- EEPROM Register Defines ---
                 .DEF EEPROM_DATA = r0
@@ -43,15 +43,15 @@
                 #endif
                 
                 ; --- Load Address Shift Value ---
-                ldi     r16,  LOW(EEPROM_ADDR_SHIFT)
+                ldi     r16,  LOW(MAIN_EEPROM_ADDR_SHIFT)
                 mov     ADDR_SHIFT_L, r16
-                ldi     r16, HIGH(EEPROM_ADDR_SHIFT)
+                ldi     r16, HIGH(MAIN_EEPROM_ADDR_SHIFT)
                 mov     ADDR_SHIFT_H, r16
                 
                 ; --- Load Byte Start Address ---
-                ldi     r16,  LOW(EEPROM_ADDR_START)
+                ldi     r16,  LOW(MAIN_EEPROM_ADDR_START)
                 mov     EEPROM_ADDR_L, r16
-                ldi     r16, HIGH(EEPROM_ADDR_START)
+                ldi     r16, HIGH(MAIN_EEPROM_ADDR_START)
                 mov     EEPROM_ADDR_H, r16
                 
                 ; --- Set Byte Initial Value ---
@@ -62,8 +62,8 @@ main_start:     sbi     PORTD, DEBUG_PIN1
                 sbi     PORTD, DEBUG_PIN2
                 
                 ; --- Wait ---
-                ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME2_MS)
-                ldi     DELAY_ARG_TIME_H, HIGH(WAIT_TIME2_MS)
+                ldi     DELAY_ARG_TIME_L,  LOW(MAIN_WAIT_TIME2_MS)
+                ldi     DELAY_ARG_TIME_H, HIGH(MAIN_WAIT_TIME2_MS)
                 rcall   delay_ms
                 
                 ; --- Set Debug Pins to Low ---
@@ -71,8 +71,8 @@ main_start:     sbi     PORTD, DEBUG_PIN1
                 cbi     PORTD, DEBUG_PIN2
                 
                 ; --- Wait ---
-                ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME2_MS)
-                ldi     DELAY_ARG_TIME_H, HIGH(WAIT_TIME2_MS)
+                ldi     DELAY_ARG_TIME_L,  LOW(MAIN_WAIT_TIME2_MS)
+                ldi     DELAY_ARG_TIME_H, HIGH(MAIN_WAIT_TIME2_MS)
                 rcall   delay_ms
                 
                 ; --- Write Byte to EEPROM ---
@@ -87,8 +87,8 @@ main_start:     sbi     PORTD, DEBUG_PIN1
                 sbi     PORTD, DEBUG_PIN1
                 
                 ; --- Wait ---
-main_W1:        ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME1_MS)
-                ldi     DELAY_ARG_TIME_H, HIGH(WAIT_TIME1_MS)
+main_W1:        ldi     DELAY_ARG_TIME_L,  LOW(MAIN_WAIT_TIME1_MS)
+                ldi     DELAY_ARG_TIME_H, HIGH(MAIN_WAIT_TIME1_MS)
                 rcall   delay_ms
                 
                 ; --- Overwrite Byte Value ---
@@ -105,8 +105,8 @@ main_W1:        ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME1_MS)
                 sbi     PORTD, DEBUG_PIN1
                 
                 ; --- Wait ---
-main_W2:        ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME1_MS)
-                ldi     DELAY_ARG_TIME_H, HIGH(WAIT_TIME1_MS)
+main_W2:        ldi     DELAY_ARG_TIME_L,  LOW(MAIN_WAIT_TIME1_MS)
+                ldi     DELAY_ARG_TIME_H, HIGH(MAIN_WAIT_TIME1_MS)
                 rcall   delay_ms
                 
                 ; --- Compare EEPROM Values ---
@@ -115,8 +115,8 @@ main_W2:        ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME1_MS)
                 sbi     PORTD, DEBUG_PIN1
                 
                 ; --- Wait ---
-main_W3:        ldi     DELAY_ARG_TIME_L,  LOW(WAIT_TIME1_MS)
-                ldi     DELAY_ARG_TIME_H, HIGH(WAIT_TIME1_MS)
+main_W3:        ldi     DELAY_ARG_TIME_L,  LOW(MAIN_WAIT_TIME1_MS)
+                ldi     DELAY_ARG_TIME_H, HIGH(MAIN_WAIT_TIME1_MS)
                 rcall   delay_ms
                 
                 ; --- Change EEPROM Byte Value ---
